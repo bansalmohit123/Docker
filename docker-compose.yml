@@ -4,5 +4,18 @@ services:
     build: .
     ports:
       - "3000:3000"
-    enviroment:
-      - PORT:3000  
+    environment:
+      - PORT:3000 
+
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mohit
+      - MONGO_INITDB_ROOT_PASSWORD=mypassword
+    volumes:
+      - mongo-db:/data/db  
+
+volumes:
+  mongo-db:
+
+       

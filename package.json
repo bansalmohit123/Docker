@@ -5,13 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"nodemon -L index.js",
-    "start":"node index.js"
+    "dev": "nodemon -L index.js",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^3.2.5",
+    "async_hooks": "^1.0.0",
     "express": "^4.19.2",
+    "mongoose": "^8.5.2",
     "nodemon": "^3.1.3"
   }
 }
