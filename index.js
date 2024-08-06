@@ -5,7 +5,7 @@ const redis = require("redis");
 const postRouter = require("./routes/postRoutes");
 const userRouter = require("./routes/userRoutes");
 let RedisStore = require("connect-redis").default;
-
+const cors =require("cors");
 const {
   MONGO_USER,
   MONGO_PASSWORD,
@@ -36,10 +36,13 @@ const connectWithRetry = () => {
 };
 connectWithRetry();
 
+app.enable("trust proxy");
+app.use(cors({}))
 const initApp = async () => {
   try {
     await redisClient.connect();
     console.log("Connected to Redis");
+   
 
     app.use(
       session({
@@ -51,7 +54,7 @@ const initApp = async () => {
           resave: false,
         saveUninitialized: false, // Set to true if using HTTPS
           httpOnly: true,
-          maxAge: 3000000,
+          maxAge: 30000,
         },
       })
     );
@@ -67,8 +70,19 @@ const initApp = async () => {
     app.use("/api/v1/users", userRouter);
 
     const port = process.env.PORT || 3000;
-    app.get("/", (req, res) => {
-      res.send("<h2> Hi there!!!!!!</h2>");
+    app.get("/api/v1", (req, res) => {
+
+      try {
+        res.send("<h2> Hi there!!!!!!</h2>");
+      console.log("yeah it");
+      } catch (error) {
+        res.status(500).send({
+          error: "Internal Server Error",
+          message: error.message
+        });
+      }
+      
+
     });
 
     app.listen(port, "0.0.0.0", () => console.log(`Listening on port ${port}`));
